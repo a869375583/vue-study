@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    body {
+      font-size: 100px;
+    }
+    [v-cloak]{
+      display: none
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <!-- <custom></custom> -->
+    <p>{{ msg }} - {{ num }}</p>
+    <p v-text="msg"></p>
+    <p v-html="msg"></p>
+    <p v-show="ok">v-show</p>
+    <p v-if="ok">v-if</p>
+    <p v-else-if="num">v-else-if</p>
+    <p v-else>v-else</p>
+    <!-- <p>{{ arr }}</p> -->
+    <ul>
+      <li v-for="(item,index) in arr" :key="index">{{ index }} - {{ item.message }}</li>
+    </ul>
+    <ul>
+      <li :key="index" v-for="(val,key,index) in obj">{{ key }} - {{ val }}</li>
+    </ul>
+
+    <!-- <p class="classa classb" v-bind:class="classa"></p> -->
+    <p class="classa classb" :class="classa">v-bind</p>
+    <p>
+      <img :src="imgUrl" alt="">
+    </p>
+    <p :class="{ 'classa':isActiveClass, classb: ok  }">v-bind</p>
+    <p :class="['classa','classb',classa,{ 'classa':isActiveClass, classb: ok  }]">v-bind</p>
+
+    <p :style="styleObj">v-bind style</p>
+    <p :style="[styleObj, {'fontSize':'50px'}]">v-bind style</p>
+
+    <p v-bind="{ id:123 , 'data-item':'test', 'data-msg':msg}"></p>
+    <p v-on:click="num++">v-on</p>
+    <p @click="num++">v-on</p>
+    
+    <input type="text" v-model="msg" >
+    <!-- <input type="text" :value="msg" @input= > -->
+    <p v-pre>
+      {{ msg }} - {{ num }}
+    </p>
+    <p v-cloak>{{ msg }}</p>
+    <p v-once>{{ msg }}</p>
+
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '<b>Vue.js!</b>', //xss攻击
+        num: 1,
+        ok: false,
+        arr: [{
+            message: 'a'
+          },
+          {
+            message: 'b'
+          },
+          {
+            message: 'c'
+          },
+          {
+            message: 'd'
+          },
+        ],
+        obj: {
+          name: 'zs',
+          sex: 'male',
+          age: 27
+        },
+        classa:'classaaa',
+        imgUrl:'./images/vue-mvvm.png',
+        isActiveClass: true,
+        styleObj:{
+          color:'red',
+          fontWeight: 'bold'
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <custom></custom>
+    <custom></custom>
+    <component-a></component-a>
+  </div>
+  <div id="app"></div>
+
+  <script>
+    Vue.component('componentA',{
+      template:`
+            <div>
+                componentA
+            </div>
+          `
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        
+      },
+      /* 局部注册  */
+      components:{
+        custom:{
+          //el:'#app',
+          template:`
+            <div>
+              custom component
+            </div>
+          `
+        }
+      }
+    })
+  </script>
+</body>
+</html>

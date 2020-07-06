@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">    
+    <component-a :prop1="msg" :prop2="2" prop3="test" class="classa" style="color:red"></component-a>    
+  </div> 
+  <template id="compa2">
+      <div>
+          componentA - {{ aaa }}   
+          <p>
+            props: <br>
+            <!-- {{ prop1 }}
+            {{ prop2 }}
+            {{ prop3 }} -->
+            {{ $attrs.prop1 }}
+          </p>       
+      </div>
+  </template>
+
+ 
+  
+
+  <script>
+    
+    Vue.component('componentA',{
+      // data(){
+      //   return {
+      //     count:0
+      //   }
+      // },
+      data(){
+        return {
+          aaa:'aaa'
+        }
+      },
+      template:'#compa2',
+      mounted() {
+        console.log(this.$attrs)
+      },
+      inheritAttrs:false
+      // props:['prop1','prop2']     
+    })
+    var vm = new Vue({
+      el:'#demo',
+      // data:{     
+      //   msg:'hi,vue'   
+      // }      
+      data(){
+        return{
+          msg:'hi,vue'
+        }
+      }
+    })
+  </script>
+</body>
+</html>

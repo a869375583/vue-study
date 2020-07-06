@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <ul>      
+        <items v-for="(model,index) in data" :key="index" :model="model"></items>    
+    </ul>
+  </div>
+
+  <script>
+    var data = [{
+      "id": "1",
+      "data": {
+        "menuName": "项目管理",
+        "menuCode": "",
+      },
+      "childTreeNode": [{
+        "data": {
+          "menuName": "项目",
+          "menuCode": "BusProject",
+        },
+        "childTreeNode": []
+      }, {
+        "data": {
+          "menuName": "我的任务",
+          "menuCode": "BusProject",
+        },
+        "childTreeNode": []
+      }, {
+        "data": {
+          "menuName": "人员周报",
+          "menuCode": "BusProject",
+        },
+        "childTreeNode": []
+      }]
+    }, {
+      "id": "2",
+      "data": {
+        "menuName": "数据统计",
+        "menuCode": "BusClock",
+      },
+      "childTreeNode": []
+    }, {
+      "id": "3",
+      "data": {
+        "menuName": "人事管理",
+        "menuCode": "",
+      },
+      "childTreeNode": []
+    }, {
+      "id": "4",
+      "data": {
+        "menuName": "基础管理",
+        "menuCode": "",
+      },
+      "childTreeNode": []
+    }]
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        data: data
+      },
+      components:{
+        items:{
+          name:'menus', //递归调用时必须要写name
+          props:['model'],
+          template:`
+          <li>
+            <h3>{{ model.data.menuName }}</h3>
+            <ul v-if="model.childTreeNode.length>0">
+              <menus v-for="(cel,index) in model.childTreeNode" :key="index" :model="cel"></menus>
+            </ul>
+          </li>
+          `
+        }
+      }
+    })
+  </script>
+</body>
+</html>

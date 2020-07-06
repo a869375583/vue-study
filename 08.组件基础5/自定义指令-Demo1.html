@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <div v-img="url" style="height:600px"></div>
+    <div v-img="url" style="height:600px"></div>
+    <div v-img="url" style="height:600px"></div>
+    <div v-img="url" style="height:600px"></div>
+    <div v-img="url" style="height:600px"></div>
+  </div>
+
+  <script>
+    // Vue.directive('background', (el, binding)=>{
+    //   el.style.backgroundColor = '#' + (Math.random()+'').substr(2,6)
+    // })
+    Vue.directive('img',{
+      bind:function(el,binding){
+        el.style.backgroundColor = '#' + (Math.random()+'').substr(2,6)
+        let img = new Image()
+        let url = binding.value
+        img.src = url
+        img.onload = () => {
+          el.style.backgroundImage = `url(${url})`
+        }
+        // console.log(binding.value)
+        // console.log(binding.arg)
+        // console.log(binding.modifiers)
+        // console.log(el.parentNode)
+        // console.log(vnode)
+      }
+      // inserted:function(el,binding){
+      //   console.log(el.parentNode)
+      // },
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        url:'https://i1.mifile.cn/a4/xmad_15234553192824_sTkYv.jpg'
+      }     
+      
+    })
+  </script>
+</body>
+</html>

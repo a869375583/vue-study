@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">    
+    <component-a></component-a>      
+  </div> 
+  <template id="compa2">
+      <!-- <div>         
+        {{ $attrs }} -->
+          <component-b></component-b>
+      <!-- </div> -->
+  </template>
+
+  <template id="compb">
+    <div>
+      这是根组件传递的数组
+      {{ pmsg8.msg }}
+    </div>
+  </template>
+
+ 
+  
+
+  <script>
+    
+    Vue.component('componentA',{        
+      template:'#compa2',
+      //props:['msg']          
+    })
+    Vue.component('componentB',{
+      template:'#compb',
+      // inject:['pmsg','pmsg2']
+      inject:{
+        pmsg3:{
+          from:'pmsg'
+        },
+        pmsg4:{
+          default(){
+            return{
+              msg:'test'
+            }
+          }
+        },
+        pmsg8:{
+          
+        }
+        
+      }
+    })
+    var vm = new Vue({
+      el:'#demo',
+      // data:{     
+      //   msg:'hi,vue'   
+      // }
+      // provide:{
+      //   pmsg:'AAA',
+      //   pmsg2:this.msg
+      // },   
+      provide(){
+        const data = {}
+        Object.defineProperty(data,'msg',{
+          enumerable:true,
+          // 这里要用箭头函数 this指向vue实例
+          get:()=>this.msg
+          // get(){
+          //   return this.msg
+          // }
+        })
+
+        return{
+          pmsg:this.msg,
+          pmsg2:this.msg,
+          pmsg8:data
+          // pmsg4:{
+          //   name:'zs'
+          // }
+        }
+        
+      },      
+      data(){
+        return{
+          msg:'test'
+        }
+      }
+    })
+  </script>
+</body>
+</html>

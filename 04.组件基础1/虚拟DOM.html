@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <ul id="myId" class="classa">
+    <li>item1</li>
+    <li>item2</li>
+    <!-- <li>item3</li> -->
+  </ul>
+
+  <script>
+    let vnode = {
+      tag:'ul',
+      attrs:{
+        id:'myId',
+        class:'classa'
+      },
+      children:[
+        {
+          tag:'li'          
+        },
+        {
+          tag:'li'          
+        },
+        // {
+        //   tag:'li'          
+        // }
+      ]
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  
+  <!-- <div id="app" @click="num++" > -->
+  <div id="app" @click.prevent="handlerClick(3)" >
+    <!-- 内联表达式 如果方法中需要使用事件对象，要显示传递$event参数 -->
+  <!-- <div id="app" @click.prevent="handlerClick(3, $event)" > -->
+    {{ num }} 
+    <input type="text" @keyup.enter = "handlerClick">
+    {{ reverseMsg() }}
+  </div>
+  <script>
+    var vm = new Vue({
+      el:'#app',
+      data:{
+        num:0,
+        msg:'Hi,vue!'
+      },
+      methods:{
+        handlerClick(n){
+          console.log("clicked")
+          // console.log(e)
+          //e.preventDefault()          
+          // this.num = this.num + n
+        },
+        handlerClick2(){
+          this.handlerClick()
+        },
+        reverseMsg(){
+          return this.msg.split("").reverse().join("") 
+        }
+      }
+    })
+  </script>
+</body>
+</html>

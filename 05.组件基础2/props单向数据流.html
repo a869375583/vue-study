@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">    
+    <component-a :count="count"></component-a>    
+    <component-a :count="count"></component-a>    
+    <component-a :count="count"></component-a>    
+    <component-a :count="count"></component-a>    
+    <component-a :count="count"></component-a>    
+    <component-a :count="count"></component-a>    
+  </div> 
+  <template id="compa2">
+      <div>
+          {{ myCount }}
+          <button @click="addCount">add</button>
+      </div>
+  </template>
+
+ 
+  
+
+  <script>
+    
+    Vue.component('componentA',{
+      // data(){
+      //   return {
+      //     count:0
+      //   }
+      // },
+      data(){
+        return {
+          myCount: this.count
+        }
+      },
+      template:'#compa2',
+      props:['count'],
+      methods:{
+        addCount(){
+          this.myCount ++
+        }
+      }      
+    })
+    var vm = new Vue({
+      el:'#demo',
+      // data:{     
+      //   msg:'hi,vue'   
+      // }        
+      data(){
+        return{
+          count:0
+        }
+      }
+    })
+  </script>
+</body>
+</html>

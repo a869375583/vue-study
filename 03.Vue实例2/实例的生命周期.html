@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    {{ msg }}
+    <button @click="handlerClick">update</button>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        msg:123
+      },
+      methods:{
+        handlerClick(){
+          this.msg = 456
+          console.log(this.$el.textContent)
+          // setTimeout(()=>{
+          //   console.log(this.$el.textContent)
+          // },1000)
+          // //dom并不是同步更新
+          // this.$nextTick(()=>{
+          //   console.log(this.$el.textContent)
+          // })
+          this.$nextTick().then(()=>{
+            console.log(this.$el.textContent)
+          })
+        }
+      },
+      // template:`<div>{{ msg }}</div>`,
+      // render(h){
+      //   console.log("render")
+      //   return h('div','test')
+      // },
+      beforeCreate() {
+        console.log("beforeCreate",this.msg, this.$el)        
+      },
+      created() {
+        // 操作data一定要在created或之后执行
+        console.log("created",this.msg, this.$el)
+      },
+      beforeMount() {
+        console.log("beforeMount", this.$el)
+      },
+      mounted() {
+        // 操作dom要在mounted之后
+        console.log("mounted", this.$el)
+      },
+      beforeUpdate() {
+        // dom并未更新
+        console.log("beforeUpdate",this.msg,this.$el.textContent)
+      },
+      updated() {
+        console.log("updated",this.msg,this.$el.textContent)
+      },
+      beforeDestroy() {
+        console.log("beforeDestroy")
+      },
+      destroyed() {
+        console.log("destroyed")
+      },
+    })
+    //.$mount("#demo")
+
+    // setTimeout(()=>vm.$destroy(),3000)
+    
+  </script>
+</body>
+</html>

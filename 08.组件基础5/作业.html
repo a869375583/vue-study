@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <comp-a></comp-a>
+  </div>
+
+  <template id="comp-a">
+    <div>
+      <comp-b prop1="prop1" @get-data="handler"></comp-b>
+    </div>
+  </template>
+  <template id="comp-b">
+    <div>
+      {{ $attrs }}
+      <comp-c v-bind="$attrs" v-on="$listeners"></comp-c>
+    </div>
+  </template>
+  <template id="comp-c">
+    <div>
+      comp-c
+    </div>
+  </template>
+  <script>
+    Vue.component('compA',{
+      template:'#comp-a',
+      data(){
+        return {
+          msg:'aaa'
+        }
+      },
+      methods:{
+        handler(msg){
+          console.log(msg)
+        }
+      }
+    })
+    Vue.component('compB',{
+      template:'#comp-b',
+      mounted(){
+        console.log(this.$listeners)
+      }
+    })
+    Vue.component('compC',{
+      template:'#comp-c',
+      data(){
+        return {
+          msg:'ccc'
+        }
+      },
+      mounted() {
+        this.$emit('get-data',this.msg)
+      },
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    .container {
+
+      position: relative;
+      width: 800px;
+      height: 500px;
+      margin: 0 auto;
+      overflow: hidden;
+
+    }
+
+    .btns {
+      padding-top: 400px;
+    }
+
+    .slider {
+      position: absolute;
+    }
+
+    .slider img {
+      max-width: 800px;
+    }
+
+    .slider-enter-active,
+    .slider-leave-active {
+      transition: all 1s
+    }
+
+    .slider-enter,
+    .slider-leave-to {
+
+      opacity: 0;
+    }
+
+    .slider-enter {
+      transform: translate3d(-100%, 0, 0);
+    }
+
+    .slider-leave-to {
+      transform: translate3d(100%, 0, 0);
+    }
+
+    .slider-enter-to,
+    .slider-leave {
+      opacity: 1;
+    }
+
+    .slider-enter-to {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .slider-leave {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .slider2-enter-active,
+    .slider2-leave-active {
+      transition: all 1s
+    }
+
+    .slider2-enter,
+    .slider2-leave-to {
+
+      opacity: 0;
+    }
+
+    .slider2-enter {
+      transform: translate3d(100%, 0, 0);
+    }
+
+    .slider2-leave-to {
+      transform: translate3d(-100%, 0, 0);
+    }
+
+    .slider2-enter-to,
+    .slider2-leave {
+      opacity: 1;
+    }
+
+    .slider2-enter-to {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .slider2-leave {
+      transform: translate3d(0, 0, 0);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <div class="container">
+      <transition-group :name="effect" ref="trans">
+        <div v-for="(item,index) in banners" :key="index" class="slider" v-show="index === curIndex" @mousemove="stop"
+          @mouseout="autoplay">
+          <a :href="item.sourceUrl">
+            <img :src="item.imgUrl" alt="">
+          </a>
+        </div>
+      </transition-group>
+      <div class="btns">
+        <button @click="prev">上一张</button>
+        <button @click="next">下一张</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#demo',
+      data: {
+        // timer,
+        effect: 'slider',
+        canClick: false,
+        curIndex: 0,
+        banners: [{
+            sourceUrl: 'https://i1.mifile.cn/a4/xmad_15234553192824_sTkYv.jpg',
+            imgUrl: 'https://i1.mifile.cn/a4/xmad_15234553192824_sTkYv.jpg'
+          },
+          {
+            sourceUrl: 'https://i1.mifile.cn/a4/xmad_1523852977495_RedjU.jpg',
+            imgUrl: 'https://i1.mifile.cn/a4/xmad_1523852977495_RedjU.jpg'
+          },
+          {
+            sourceUrl: 'https://i1.mifile.cn/a4/xmad_15239326176265_HDrpS.jpg',
+            imgUrl: 'https://i1.mifile.cn/a4/xmad_15239326176265_HDrpS.jpg'
+          }
+        ]
+      },
+      methods: {
+        autoplay() {
+          this.timer = setInterval(() => {
+            this.curIndex = this.curIndex >= this.banners.length - 1 ? 0 : this.curIndex + 1
+
+            console.log(this.$refs.trans.children[this.curIndex].elm)
+            let elm = this.$refs.trans.children[this.curIndex].elm
+            this.canClick = false
+            elm.addEventListener("transitionend", () => {
+              this.canClick = true
+            })
+          }, 3000)
+
+        },
+        stop() {
+          clearInterval(this.timer)
+        },
+        prev() {
+          if (this.canClick) {
+
+            this.canClick = false
+            clearInterval(this.timer)
+            this.effect = 'slider'
+            this.curIndex--
+            if (this.curIndex < 0) {
+              this.curIndex = this.banners.length - 1
+            }
+            this.autoplay()
+          }
+        },
+        next() {
+          if (this.canClick) {
+
+            this.canClick = false
+            clearInterval(this.timer)
+            this.effect = 'slider2'
+            this.curIndex = this.curIndex >= this.banners.length - 1 ? 0 : this.curIndex + 1
+            this.autoplay()
+          }
+        }
+      },
+      mounted() {
+        this.autoplay()
+      }
+    })
+  </script>
+</body>
+
+</html>

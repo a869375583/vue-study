@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+  <div id="demo" @click="handler">
+    {{ message }}
+    {{ age }}
+    {{ name }}
+  </div>
+
+  <script>
+    /* 事件循环参考 https://juejin.im/post/59e85eebf265da430d571f89 */
+    var vm = new Vue({
+      el: '#demo',
+      data: {
+        message: 'hi',
+        age: 27,
+        name: 'zs'
+      },
+      methods: {
+        handler() {
+          this.message = '更新1'
+          this.message = '更新2'
+          this.message = '更新3'
+          this.age = 18
+          this.name = 'ls'
+          this.$nextTick(() => {
+            //dom更新后执行
+          })
+          this.$nextTick().then(() => {
+            // 支持promise的写法
+          })
+        },
+        //支持ES7的写法 
+        async updateMsg() {
+          this.message = 'updated'
+          console.log(this.$el.textContent) // => '未更新'
+          await this.$nextTick()
+          console.log(this.$el.textContent) // => '已更新'
+
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

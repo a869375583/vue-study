@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <input type="text" id="input">
+    <p id="text" v-text="text">{{text}}</p>
+  </div>
+  <script>
+    const $data = {}
+    Object.defineProperty($data, "text", {
+      configurable:true,
+      enumerable:true,
+      get:function(){
+        console.log(value)
+        return value
+      },
+      set:function(newVal){
+        console.log("setVal:",newVal)
+        document.getElementById('input').value = newVal
+        document.getElementById('text').innerHTML = newVal
+        value = newVal
+      }
+    })
+
+    $data.text = "test"
+  </script>
+</body>
+</html>

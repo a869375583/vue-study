@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">    
+    {{ msg }}
+    <component-a :msg="msg" :prop1="123" @get-data="getData"></component-a>      
+  </div> 
+  <template id="compa2">
+      <!-- <div>         
+        {{ $attrs }} -->
+          <component-b v-bind="$attrs" v-on="$listeners" ></component-b>
+      <!-- </div> -->
+  </template>
+
+  <template id="compb">
+    <div>
+      
+      {{ msg }}
+      <button @click="handlerClick">向根组件传递数据</button>
+    </div>
+  </template>
+
+ 
+  
+
+  <script>
+    
+    Vue.component('componentA',{        
+      template:'#compa2',
+      //props:['msg']          
+    })
+    Vue.component('componentB',{
+      template:'#compb',
+      data(){
+        return{
+          msg:'12345'
+        }
+      },
+      methods:{
+        handlerClick(){
+          this.$emit('get-data', this.msg)
+        }
+      }
+      
+    })
+    var vm = new Vue({
+      el:'#demo',
+      // data:{     
+      //   msg:'hi,vue'   
+      // }        
+      data(){
+        return{
+          msg:''
+        }
+      },
+      methods:{
+        getData(val){
+          this.msg = val
+        }
+      }
+    })
+  </script>
+</body>
+</html>

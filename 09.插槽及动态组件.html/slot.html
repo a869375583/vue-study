@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+  <div id="demo">
+    <comp-a>
+      <!-- 匿名插槽（默认插槽） -->
+      <ul>
+        <li>菜单1</li>
+        <li>菜单2</li>
+        <li>菜单3</li>
+        <li>菜单4</li>
+      </ul><!-- 具名插槽 --><ul slot="menu2">
+        <li>菜单2-1</li>
+        <li>菜单2-2</li>
+        <li>菜单2-3</li>
+        <li>菜单2-4</li>
+      </ul><ul slot="menu2">
+        <li>菜单3-1</li>
+        <li>菜单3-2</li>
+        <li>菜单3-3</li>
+        <li>菜单3-4</li>
+      </ul><p>
+        内容--匿名插槽（默认插槽）{{ msg }}
+      </p>
+    </comp-a>
+  </div>
+
+  <script>
+    Vue.component('compA', {
+      template: `<div>
+        comp-a
+        
+        <slot name='menu2'></slot>
+      </div>`,
+      mounted() {
+        console.log(this.$slots)
+      },
+    })
+    var vm = new Vue({
+      el: '#demo',
+      data: {
+
+      }
+    })
+  </script>
+</body>
+
+</html>

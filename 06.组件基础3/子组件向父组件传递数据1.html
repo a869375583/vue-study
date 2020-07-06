@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>  
+  <div id="app">
+    {{ msg }}
+    <child :get-data="getData"></child>
+  </div>
+  <template id="compChild">
+    <div>
+      子组件 {{ msg }}
+      <button @click="getData(msg)">传递数据</button>
+    </div>
+  </template>
+  <script>
+    Vue.component('child',{
+      data(){
+        return{
+          msg:'childMsg'
+        }
+      },
+      template:'#compChild',
+      props:['getData']
+    })
+    new Vue({
+      el:'#app',
+      data:{
+        msg:''
+      },
+      methods:{
+        getData(val){
+          this.msg = val
+        }
+      }
+    })
+  </script>
+</body>
+</html>

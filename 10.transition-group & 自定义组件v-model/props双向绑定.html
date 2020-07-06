@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <!-- <comp-a :prop1="msg" @update-msg = 'msg = $event'   :prop2="msg2"></comp-a> -->
+    <!-- <comp-a :prop1="msg" @update:msg = 'msg = $event'   :prop2="msg2"></comp-a> -->
+    <!-- <comp-a :prop1.sync="msg" :prop2.sync="msg2"></comp-a> -->
+    <comp-a v-bind.sync="obj"></comp-a>
+  </div>
+
+  <script>
+    Vue.component('comp-a',{
+      template:`<div>{{ prop1 }} </div>`,
+      props:['prop1','prop2'],
+      data(){
+        return {
+          // myMsg: this.prop1
+        }
+      },
+      // watch:{
+      //   prop1(newVal,oldVal){
+      //     this.myMsg = newVal
+      //   },
+      //   myMsg(newVal,oldVal){
+      //     this.$emit('update-msg',newVal)
+      //   }
+      // }
+      mounted() {
+        setTimeout(()=> this.$emit('update:prop1','child value1'),3000)
+        setTimeout(()=> this.$emit('update:prop2','child value2'),3000)
+      },
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        msg:'hi,vue',
+        msg2:'hello,vue',
+        obj:{
+          prop1:'hi,vue',
+          prop2:'hello,vue'
+        }
+      }
+    })
+  </script>
+</body>
+</html>

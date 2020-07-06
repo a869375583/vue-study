@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    
+  </div>
+
+  <script>
+    const A = {
+      data(){
+        return {
+          a:1,
+          c:1
+        }
+      },
+      computed:{
+        a2(){
+          return this.a*2
+        }
+      }
+    }
+    const B = {
+      extends:A,
+      data(){
+        return{
+          b:2,
+          c:2
+        }
+      }
+    }
+    var vm = new Vue({
+      el:'#demo',
+      extends:B,
+      data:{
+        // c:3
+      }
+    })
+  </script>
+</body>
+</html>

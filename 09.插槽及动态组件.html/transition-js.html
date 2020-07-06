@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+  <style>
+    body{
+      font-size: 80px;
+    }    
+  </style>
+</head>
+<body>
+  <div id="demo">
+    <button @click="componentId='A'">A</button>
+    <button @click="componentId='B'">B</button>
+    <button @click="componentId='C'">C</button>
+    <transition 
+      name="fade" 
+      mode="out-in"
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @leave="leave"
+    >
+      <keep-alive>
+        <component :is="componentId"></component>
+      </keep-alive>
+    </transition>
+    <!-- <custom></custom> -->
+  </div>
+
+  <script>
+    var EventBus = new Vue()
+
+    Vue.component('A',{
+      template:`<div>A</div>`,
+      beforeDestroy() {
+        console.log("beforeDestory")
+      },
+      mounted(){
+        console.log("mounted")
+      },
+      activated() {
+        console.log("A activated")
+      },
+      deactivated() {
+        console.log("A deactivated")
+      },
+      
+    })
+    Vue.component('B',{
+      template:`<div>
+      B 
+      <input type="text" v-model="ipt">
+      </div>`,
+      destroyed() {
+        console.log("destoryed")
+      },
+      data(){
+        return {
+          ipt:''
+        }
+      },
+      mounted() {   
+        console.log("B mounted")     
+        EventBus.$on('send',val=>{
+          console.log('接收C组件传过来的数据：',val)
+        })
+      },
+    })
+    Vue.component('C',{
+      template:`<div>C
+      <button @click='send'>send</button>
+      </div>`
+      ,
+      methods:{
+        send(){
+          EventBus.$emit('send','ccc')
+        }
+      }
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        componentId:'A'
+      },
+      methods:{
+        beforeEnter(el){
+          // Velocity(el,{ opacity:0 },{ duration:0 })
+          el.style.opacity = 0
+        },
+        enter(el,done){
+          Velocity(el,{ opacity:1 },{ duration:5000, complete: done })
+        },
+        afterEnter(el){
+          console.log("afterEnter")
+        },
+        leave(el,done){
+          Velocity(el,{ opacity:0 },{ duration:5000, complete: done })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

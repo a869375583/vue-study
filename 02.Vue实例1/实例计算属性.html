@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  
+  <!-- <div id="app" @click="num++" > -->
+  <div id="app" @click.prevent="handlerClick(3)" >
+    {{ num }} 
+    <input type="text" @keyup.enter = "handlerClick">
+    方法调用：{{ reverseMsg() }}
+    计算属性： {{ reverseMsg2 }}
+    关闭缓存的计算属性： {{ reverseMsg3 }}
+  </div>
+  <script>
+    var vm = new Vue({
+      el:'#app',
+      data:{
+        num:0,
+        msg:'Hi,vue!'
+      },
+      methods:{
+        handlerClick(n){
+          console.log("clicked")
+          // console.log(e)
+          //e.preventDefault()          
+          // this.num = this.num + n
+        },
+        handlerClick2(){
+          this.handlerClick()
+        },
+        reverseMsg(){
+          console.log("调用了方法")
+          return this.msg.split("").reverse().join("") 
+        }
+      },
+      computed:{
+        reverseMsg2(){
+          console.log("执行了计算属性的计算")
+          return this.msg.split("").reverse().join("") /* + new Date().getTime() */
+        },
+        //注意vue属性和方法 不能用箭头函数  这个时候this不会指向vue实例
+        reverseMsg1:()=>{          
+          return this
+        },
+        reverseMsg3:{
+          cache: false, //关闭缓存
+          get(){
+            console.log("关闭缓存的计算属性的计算")
+            return this.msg.split("").reverse().join("")
+          },
+          // 不推荐使用
+          set(newVal){
+            console.log("调用计算属性的set方法")
+            this.msg = newVal.split("").reverse().join("")
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>

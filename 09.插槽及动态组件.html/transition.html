@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    body{
+      font-size: 80px;
+    }
+    .fade-enter-active, .fade-leave-active{
+      transition: all 3s;
+    }
+    .fade-enter-to,.fade-leave{
+      opacity: 1;
+    }
+    .fade-enter, .fade-leave-to{
+      opacity: 0;
+    }
+    /* .fade-enter-active{
+      transition-delay: 3s
+    } */
+  </style>
+</head>
+<body>
+  <div id="demo">
+    <button @click="componentId='A'">A</button>
+    <button @click="componentId='B'">B</button>
+    <button @click="componentId='C'">C</button>
+    <transition name="fade" mode="out-in">
+      <!-- <keep-alive> -->
+        <component :is="componentId"></component>
+      <!-- </keep-alive> -->
+    </transition>
+    <!-- <custom></custom> -->
+  </div>
+
+  <script>
+    var EventBus = new Vue()
+
+    Vue.component('A',{
+      template:`<div>A</div>`,
+      beforeDestroy() {
+        console.log("beforeDestory")
+      },
+      mounted(){
+        console.log("mounted")
+      },
+      activated() {
+        console.log("A activated")
+      },
+      deactivated() {
+        console.log("A deactivated")
+      },
+      
+    })
+    Vue.component('B',{
+      template:`<div>
+      B 
+      <input type="text" v-model="ipt">
+      </div>`,
+      destroyed() {
+        console.log("destoryed")
+      },
+      data(){
+        return {
+          ipt:''
+        }
+      },
+      mounted() {   
+        console.log("B mounted")     
+        EventBus.$on('send',val=>{
+          console.log('接收C组件传过来的数据：',val)
+        })
+      },
+    })
+    Vue.component('C',{
+      template:`<div>C
+      <button @click='send'>send</button>
+      </div>`
+      ,
+      methods:{
+        send(){
+          EventBus.$emit('send','ccc')
+        }
+      }
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        componentId:'A'
+      }
+    })
+  </script>
+</body>
+</html>

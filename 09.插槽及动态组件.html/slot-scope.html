@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+  <div id="demo">
+    <comp-a>
+      <!-- <template slot-scope="props"> -->
+      <div slot-scope="{prop1,data}">
+        <ul>
+          <li v-for="item in data">{{ item }}</li>
+        </ul>
+        <p>{{ prop1 }}</p>
+        <p>{{ msg }}</p>
+      </div>
+      <!-- </template> -->
+    </comp-a>
+  </div>
+
+  <script>
+    Vue.component('compA', {
+      template: `<div>
+        comp-a        
+        <slot :data ="arr"></slot>
+        <slot :prop1 ="'prop1'"></slot>
+      </div>`,
+      data(){
+        return {
+          arr:['zhangan','lisi','wangwu']
+        }
+      },
+      mounted() {
+        console.log(this.$slots)
+      },
+    })
+    var vm = new Vue({
+      el: '#demo',
+      data: {
+        msg:'hi'
+      }
+    })
+  </script>
+</body>
+
+</html>

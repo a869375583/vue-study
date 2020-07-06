@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo" v-background:color.a.b="color">
+    {{ msg }}
+    <comp-a></comp-a>
+  </div>
+
+  <script>
+    // Vue.directive('background', (el, binding)=>{
+    //   el.style.backgroundColor = '#' + (Math.random()+'').substr(2,6)
+    // })
+    Vue.directive('background',{
+      bind:function(el,binding,vnode){
+        el.style.backgroundColor = '#' + (Math.random()+'').substr(2,6)
+        // console.log(binding.value)
+        // console.log(binding.arg)
+        // console.log(binding.modifiers)
+        // console.log(el.parentNode)
+        // console.log(vnode)
+        console.log("directive bind")
+      },
+      inserted:function(el,binding){
+        // console.log(el.parentNode)
+        console.log("directive inserted")
+      },
+      update:function(el,binding) {
+        console.log("directive update")
+      },
+      componentUpdated:function(el,binding) {
+        console.log("directive componentUpdated")
+      },
+      // update
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        msg:'Hi,vue',
+        color:'red'
+      },
+      components:{
+        compA:{
+          template:'<p>comp-a</p>'
+        }
+      },
+      beforeCreate() {
+        console.log("beforeCreate")
+      },
+      created() {
+        console.log("created")
+      },
+      beforeMount() {
+        console.log("beforeMount")
+      },
+      mounted() {
+        console.log("mounted")
+      },
+      beforeUpdate() {
+        console.log("beforeUpdate")
+      },
+      updated() {
+        console.log("updated")
+      },
+      // directives:{
+
+      // }
+    })
+  </script>
+</body>
+</html>

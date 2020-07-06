@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    .select{
+      background: #ddd;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- <div id="app" @click="num++" > -->
+  <div id="app" >
+    <input type="text" v-model="iptVal" @keyup="showUl" @blur="hideUl" @keydown.down="handlerArrowDown" @keydown.up.prevent ="handlerArrowUp" @keyup.enter="selectMail2">
+    <ul v-show="isShow">
+      <li v-for="(mail,index) in mailList" :key="index" @click="selectMail2" :class="{select: selectIndex === index  }" @mousemove="selectIndex = index">{{ mail }}</li>
+    </ul>
+        
+  </div>
+  <script>
+    
+    var vm = new Vue({
+      el:'#app',
+      data:{
+        iptVal:'',
+        isShow: false,
+        selectIndex:-1
+      },
+      computed:{
+        mailList(){
+          const arr = ["qq.com", "163.com", "126.net", "gmail.com", "189.cn", "263.net"]
+          let pos = this.iptVal.indexOf('@')
+          if(pos>0){
+            let realText = this.iptVal.slice(0,pos)
+            let emailCom = this.iptVal.slice(pos)
+            //方法一
+            // return arr.map( v => realText + '@' + v)
+            //   .filter( v=> v.slice(pos).includes(emailCom) )
+            // 方法二 
+            return arr.filter( v=> ('@'+v).includes(emailCom))
+              .map( v=> realText + '@' + v)
+
+          }else{
+            return arr.map( item => this.iptVal + '@' + item  )
+          }
+        }
+      },
+      methods:{
+        showUl(){
+          if(this.iptVal){
+            this.isShow = true
+          }
+        },
+        hideUl(){
+          setTimeout(()=>{
+            this.isShow = false
+          },100)
+        },
+        selectMail(mail){
+          this.iptVal = mail
+          this.isShow = false
+        },
+        selectMail2(){
+          this.iptVal = this.mailList[this.selectIndex]
+          this.isShow = false
+        },
+        handlerArrowDown(){
+          if(this.iptVal){
+            this.selectIndex = (this.selectIndex + 1) % this.mailList.length
+          }
+        },
+        handlerArrowUp(e){
+          //e.preventDefault()
+          
+          if(this.iptVal){
+            this.selectIndex = this.selectIndex <=0 ? this.mailList.length - 1 : this.selectIndex - 1
+            // this.selectIndex = (this.selectIndex - 1) % this.mailList.length
+          }
+        }
+      }    
+    })
+  </script>
+</body>
+</html>

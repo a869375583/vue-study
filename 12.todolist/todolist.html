@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <link rel="stylesheet" href="todo.css">
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <input 
+          type="text" 
+          class="new-todo" 
+          placeholder="what needs to be done?" 
+          @keyup.enter="addTodo" 
+          ref="ipt"
+        >
+      </header>
+
+      <section class="main">
+        <input 
+          id="toggle-all" 
+          type="checkbox" 
+          class="toggle-all" 
+          v-model="checkAll"
+        >
+        <!-- label用来显示全选按钮 -->
+        <label for="toggle-all"></label>
+        <ul class="todo-list">
+          <item 
+            v-for="(todo,index) in todosView" 
+            :todo="todo" 
+            :key="index"
+            @delete-todo="deleteTodo">
+          </item>
+        </ul>
+      </section>
+
+      <tabs 
+        :filter="filter"
+        :items-left-count="itemsLeftCount"
+        :is-have-completed="isHaveCompleted"
+        @toggle-filter="toggleFilter"
+        @clear-completed="clearCompleted"
+
+      ></tabs>
+      
+    </section>
+  </div>
+
+  <template id="item">
+    <li :class="{editing: isEditing, completed:todo.isCompleted}">
+      <div class="view">
+        <input 
+          type="checkbox" 
+          v-model="todo.isCompleted" 
+          class="toggle"
+        >
+        <label @dblclick="editTodo">{{ todo.content }}</label>
+        <button class="destroy" @click="deleteTodo"></button>
+      </div>
+      <input 
+        ref="iptEdit"
+        type="text" 
+        class="edit" 
+        v-show="isEditing"
+        v-model.lazy="todo.content"
+        @keyup.enter="doneEdit"
+        @blur="doneEdit"
+        @keydown.esc="cancelEdit"
+      >
+    </li>
+  </template>
+
+  <template id="tabs">
+    <footer class="footer">
+      <span class="todo-count">
+        <strong>{{ itemsLeftCount }}</strong>
+        <span> </span>
+        <span>item</span>
+        <span> left</span>
+      </span>
+      <ul class="filters">
+        <li
+         v-for="state in states"  
+         :key="state"       
+        >
+          <a :class="{'selected': state === filter}" @click="toggleFilter(state)">
+            {{ state }}
+          </a>
+          <span> </span>
+        </li>
+      </ul>
+      <button 
+        class="clear-completed"
+        v-show="isHaveCompleted"
+        @click="clearCompleted"
+      >Clear Completed</button>
+
+      
+
+    </footer>
+  </template>
+
+  <script>
+    Vue.component('Item',{
+      template:'#item',
+      props:['todo'],
+      data(){
+        return {
+          isEditing:false,
+          //cache:this.todo.content
+        }
+      },
+      methods:{
+        deleteTodo(){
+          this.$emit('delete-todo',this.todo)
+        },
+        editTodo(){
+          this.isEditing = true
+          this.cache = this.todo.content
+          this.$nextTick(()=>this.$refs.iptEdit.focus())          
+        },
+        doneEdit(){
+          this.isEditing = false
+        },
+        cancelEdit(){
+          //取消修改
+          this.$refs.iptEdit.value = this.cache
+          this.isEditing = false
+          // setTimeout(()=>this.todo.content = this.cache,1000)
+          // this.$nextTick(()=>this.todo.content= this.cache)
+          
+        }
+      }
+    })
+    Vue.component('Tabs',{
+      template:'#tabs',
+      props:['filter','itemsLeftCount','isHaveCompleted'],
+      data(){
+        return {
+          states:['All','Active','Completed']
+        }
+      },
+      methods:{
+        toggleFilter(state){
+          this.$emit('toggle-filter',state)
+        },
+        clearCompleted(){
+          this.$emit('clear-completed')
+        }
+      }
+    })
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        todos:[
+          /* {
+            content:'写代码',
+            isCompleted:false
+          },
+          {
+            content:'吃饭',
+            isCompleted:true
+          }, */
+        ],
+        filter:'All'
+      },
+      computed:{
+        /* 双向绑定 计算属性 实现全选反选功能 */
+        checkAll:{
+          get(){
+            return this.todos.every(todo => todo.isCompleted)
+          },
+          set(val){
+            this.todos.forEach(todo=> todo.isCompleted = val)
+          }
+        },
+        itemsLeftCount(){
+          return this.todos.reduce((t,todo)=>todo.isCompleted ? t : t+ 1, 0)
+        },
+        todosView(){
+          if(this.filter === 'All'){
+            return this.todos
+          } else if (this.filter === 'Active'){
+            return this.todos.filter(todo=>!todo.isCompleted )
+          } else {
+            return this.todos.filter(todo=>todo.isCompleted )
+          }
+        },
+        isHaveCompleted(){
+          return this.todos.some( todo => todo.isCompleted)
+        }
+      },
+      methods:{
+        addTodo(e){
+          this.todos.unshift({
+            // content:e.target.value
+            content: this.$refs.ipt.value,
+            isCompleted: false
+          })
+          this.$refs.ipt.value = ''
+        },
+        deleteTodo(todo){
+          this.todos.splice(this.todos.findIndex( item=>item === todo),1)
+          // this.todos = this.todos.filter(item=>item !== todo)
+        },
+        toggleFilter(state){
+          this.filter = state
+        },
+        clearCompleted(){
+          this.todos = this.todos.filter( todo => !todo.isCompleted )
+        },
+        saveData(){
+          localStorage.setItem('filter',this.filter)
+          localStorage.setItem('todos',JSON.stringify(this.todos))
+        },
+        getData(){
+          if(localStorage.getItem('todos')){
+            this.todos = JSON.parse(localStorage.getItem('todos'))
+          }
+          if(localStorage.getItem('filter')){
+            this.filter = localStorage.getItem('filter')
+          }
+        }
+      },
+      updated() {
+        this.saveData()
+      },
+      created() {
+        this.getData()
+      },
+    })
+  </script>
+</body>
+</html>

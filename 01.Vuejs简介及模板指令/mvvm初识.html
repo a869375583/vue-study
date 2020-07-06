@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div id="name">{{ name }}</div>
+    <div id="age">{{ age }}</div>
+  </div>
+  <script>
+    /* var name = 'Peter'
+    var age = 27
+    document.getElementById('name').innerHTML = name
+    document.getElementById('age').innerHTML = age
+ */
+
+    var vm = new Vue({
+      el:'#app',
+      data:{
+        name: 'Tom',
+        age: 18
+      }
+    })
+    /* var person = {
+      name: 'Tom',
+      age: 18
+    }
+    person.name = 'Peter'
+    person.age = 27 */
+
+  </script>
+</body>
+
+</html>

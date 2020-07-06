@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    <my-component></my-component>
+  </div>
+
+  <script>
+    let baseOptions = {
+      data(){
+        return{
+          firstName:'Jacky',
+          lastName:'Wu'
+        }
+      },
+      template:`<div> {{ firstName }} - {{ lastName }}</div>`
+    }
+    let BaseComponent = Vue.extend(baseOptions)
+
+    // Vue.component('myComponent', baseOptions )
+    // Vue.component('myComponent', Vue.extend(baseOptions) )
+    // Vue.component('myComponent', BaseComponent )
+    new BaseComponent({
+      el:'#demo',
+      computed:{
+        fullName(){
+          return this.firstName + ' ' + this.lastName
+        }
+      }
+    })
+    //.$mount('my-component')
+
+    // var vm = new Vue({
+    //   el:'#demo',
+    //   data:{
+        
+    //   }
+    // })
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="demo">
+    {{ msg }}
+    {{ arr }}
+    {{ obj }}
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el:'#demo',
+      data:{
+        msg:'test',
+        arr:[
+          'vue1',
+          'vue2',
+          'vue3'
+        ],
+        obj:{
+          name:'zs',
+          age:27
+        },
+        // message:''
+        
+      }
+    })
+
+    // vm.obj = Object.assign({}, vm.obj, {sex:'male'})
+    // vm.obj = {...vm.obj, sex:'male'}
+
+    // vm.$set(vm.obj,'sex','male')
+    // vm.$set(vm, 'message', 'test')
+
+    vm.$set(vm.arr, 1, 'vue21')
+
+  </script>
+</body>
+</html>

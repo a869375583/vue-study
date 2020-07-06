@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  
+  <div id="app">    
+    
+  </div>
+  <script>
+    var vm = new Vue({
+      el:'#app',
+      data:{
+        firstName:'Zhang',
+        lastName:'san',
+        count:0,
+        obj:{
+          person:{
+            name:'ls'
+          }
+        }
+      },
+      methods:{        
+      },
+      computed:{
+        fullName(){
+          // setTimeout(()=>{
+          //   console.log("test")
+          //   return this.firstName + ' ' + this.lastName
+          // },500)
+          /* this.count ++
+          this.firstName = 'Li' */
+          return this.firstName + ' ' + this.lastName
+        },
+        wifeName(){
+          return this.firstName + ' ' + 'Jane'
+        }
+      },
+      watch:{
+        firstName(newVal,oldVal){
+          console.log("firstName changed")          
+          setTimeout(()=>{            
+            console.log(this.firstName + ' ' + this.lastName)
+            console.log(this.firstName + ' ' + 'Jane')    
+          },3000)
+        },
+        lastName(newVal,oldVal){
+          console.log("lastName changed")
+          console.log(this.firstName + ' ' + this.lastName)
+        },
+        'obj.person.name'(){
+          console.log("obj.person.name changed")
+        },
+        // 'obj'(){
+        //   console.log("obj changed")
+        // },
+        obj:{
+          handler(newVal,oldVal){
+            console.log(`obj:${newVal} -- ${oldVal}`)            
+          },
+          deep:true
+        },
+        count:{
+          handler(newVal,oldVal){
+            console.log(`count:${newVal} -- ${oldVal}`)            
+          },
+          // 实例化的时候会执行这个侦听器  首次执行
+          immediate:true
+        }
+      }
+
+    })
+    var unwatch = vm.$watch('firstName',(newVal,oldVal)=>{
+
+    },{
+      deep:true,
+      immediate:true
+    })
+    
+    //取消侦听
+    unwatch()
+  </script>
+</body>
+</html>

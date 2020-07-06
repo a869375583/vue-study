@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue.js</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    .td-num{
+      display: flex;
+      width: 100px;
+      justify-content: center
+    }
+    .ipt-num{
+      width: 60px;
+      padding:0 10px;
+      text-align: center;
+    }
+    .td-price{
+      text-align: right
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <table class="table  table-striped">
+      <thead>
+        <tr>
+          <th scope="col"><input type="checkbox" v-model="checkAll"></th>
+          <th scope="col">名称</th>
+          <th scope="col">数量</th>
+          <th scope="col">单价</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in cartList">
+          <th scope="row"><input type="checkbox" v-model="item.selected"></th>
+          <td>{{ item.goodsName }}</td>
+          <td class="td-num">
+            <button @click="minus(item)">-</button>
+            <input type="text" v-model="item.buy_num" class="ipt-num" maxlength="4">
+            <button @click="add(item)">+</button>
+          </td>
+          <td class="td-price">{{ item.price }} </td>
+        </tr>
+
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col">
+        共有 {{ total_num }} 件商品，选中 {{ select_num }} 件
+      </div>
+      <div class="col">
+        商品总价 ￥{{ total_price }} <button class="btn btn-primary">去结算</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#demo',
+      data() {
+        return {
+          //checkAll:false,
+          cartList: [{
+              goodsName: '小米6',
+              buy_num: 1,
+              price: 2000,
+              selected: true
+            },
+            {
+              goodsName: '红米3',
+              buy_num: 1,
+              price: '999',
+              selected: true
+            },
+            {
+              goodsName: '小米Note3',
+              buy_num: 1,
+              price: 1199,
+              selected: false
+            }
+          ]
+        }
+      },
+      computed: {
+        selectList() {
+          return this.cartList.filter(item => item.selected)
+        },
+        total_num() {
+          return this.cartList.reduce((totalNum, item) => totalNum + item.buy_num, 0)
+        },
+        select_num() {
+          return this.selectList.reduce((totalNum, item) => totalNum + item.buy_num, 0)
+        },
+        total_price(){
+          return this.selectList.reduce((totalPrice, item) => totalPrice + item.buy_num * item.price, 0)
+        },
+        checkAll: {
+          get() {
+            return this.cartList.every(item => item.selected)
+          },
+          set(val) {
+            // this.checkAll = val
+            console.log(val)
+            if (val) {
+              this.cartList.map(item => item.selected = true)
+            } else {
+              this.cartList.map(item => item.selected = false)
+            }
+          }
+        }
+      },
+      methods: {
+        add(item) {
+          item.buy_num++
+        },
+        minus(item) {
+          if (item.buy_num > 0) {
+            item.buy_num--
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
