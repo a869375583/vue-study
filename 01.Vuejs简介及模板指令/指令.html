@@ -41,12 +41,21 @@
       <li :key="index" v-for="(val,key,index) in obj">{{ key }} - {{ val }}</li>
     </ul>
 
+
+    <!--v-bind 数据绑定-->
     <!-- <p class="classa classb" v-bind:class="classa"></p> -->
+    <!--缩写去掉v-bind-->
     <p class="classa classb" :class="classa">v-bind</p>
     <p>
+
+      <!--v-bind:src绑定图片地址-->
       <img :src="imgUrl" alt="">
     </p>
+
+    <!--classa为字符串 isActiveClass变量等于true时输出classa-->
     <p :class="{ 'classa':isActiveClass, classb: ok  }">v-bind</p>
+
+    <!--数组中的classa为变量-->
     <p :class="['classa','classb',classa,{ 'classa':isActiveClass, classb: ok  }]">v-bind</p>
 
     <p :style="styleObj">v-bind style</p>
@@ -58,10 +67,16 @@
     
     <input type="text" v-model="msg" >
     <!-- <input type="text" :value="msg" @input= > -->
+
+    <!--v-pre不编译显示-->
     <p v-pre>
       {{ msg }} - {{ num }}
     </p>
+
+    <!--v-cloak编译后在加载显示-->
     <p v-cloak>{{ msg }}</p>
+
+    <!--v-once初次绑定值 不变-->
     <p v-once>{{ msg }}</p>
 
   </div>
