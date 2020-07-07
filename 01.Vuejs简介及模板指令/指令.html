@@ -24,15 +24,20 @@
     <p>{{ msg }} - {{ num }}</p>
     <p v-text="msg"></p>
     <p v-html="msg"></p>
-    <p v-show="ok">v-show</p>
-    <p v-if="ok">v-if</p>
-    <p v-else-if="num">v-else-if</p>
+    <p v-show="ok">v-show</p> //绑定值为true那么display=block  否则none
+    <p v-if="ok">v-if</p> //绑定值为true那么移除整个标签 不渲染
+    <p v-else-if="num">v-else-if</p> //if判断false后进入v-else-if
     <p v-else>v-else</p>
     <!-- <p>{{ arr }}</p> -->
     <ul>
+      <!--key可以免除循环报错  能获取到哪项数据更改-->
+      <!--item为数据 index为下标-->
+      <!--数组写法-->
       <li v-for="(item,index) in arr" :key="index">{{ index }} - {{ item.message }}</li>
     </ul>
     <ul>
+      <!--key为键名 val为键值-->
+      <!--对象写法-->
       <li :key="index" v-for="(val,key,index) in obj">{{ key }} - {{ val }}</li>
     </ul>
 
